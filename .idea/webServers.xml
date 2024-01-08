@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="63386b89-8302-4154-803a-d565f3f4647f" name="symfony-training">
+        <fileTransfer rootFolder="/var/www/emag-training" accessType="SFTP" host="gen-docker25021-all-dev.adr.e5.c.emag.network" port="22" sshConfigId="bdb6162a-4530-4e07-b7bd-fb5f1ec4aac6" sshConfig="artur.bozieac@gen-docker25021-all-dev.adr.e5.c.emag.network:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

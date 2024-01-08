@@ -1,0 +1,122 @@
+$ cd /var/www/
+$ mkdir new-project-name && cd new-project-name
+$ git clone https://github.com/dancostinel/docker-empty-symfony6-nginx-php8.2-mysql8-phpmyadmin.git .
+$ rm -rf .git
+# created repo:  https://github.com/dancostinel/new-project-name.git
+$ git init
+$ git remote add origin https://github.com/dancostinel/new-project-name.git
+$ git add .
+$ git commit -m "init"
+$ git push origin master
+$ vi docker/docker-compose.yaml  ### replace empty-project with new-project-name-app and replace ports with new ones
+version: '3'
+volumes:
+    mysql_data:
+services:
+    new-project-name-nginx-service:
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
+        container_name: new-project-name-nginx-container
+        volumes:
+            - ./../:/var/www/new-project-name/
+        ports: ['8001:80']
+        networks:
+            - new-project-name-network
+    new-project-name-php-service:
+        build:
+            context: .
+            dockerfile: ./php/Dockerfile
+        container_name: new-project-name-php-container
+        ports: ['9001:9000']
+        volumes:
+            - ./../:/var/www/new-project-name/
+            - ./../vendor:/var/www/new-project-name/vendor
+        networks:
+            - new-project-name-network
+    new-project-name-mysql-service:
+        image: mysql
+        container_name: new-project-name-mysql-container
+        command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--default-authentication-plugin=mysql_native_password']  #--authentication_policy
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports: ['3310:3306']
+        volumes:
+            - ./mysql:/var/lib/mysql
+        networks:
+            - new-project-name-network
+    new-project-name-phpmyadmin-service:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: new-project-name-phpmyadmin-container
+        environment:
+            PMA_HOST: new-project-name-mysql-service
+            PMA_USER: root
+            PMA_PASSWORD: root
+        ports: ['8080:80']
+        depends_on:
+            - new-project-name-mysql-service
+        volumes:
+            - ./phpmyadmin/:/var/www/new-project-name/docker/phpmyadmin/
+        networks:
+            - new-project-name-network
+networks:
+    new-project-name-network:
+
+$ vi docker/nginx/default.conf   ### replace empty-project with new-project-name
+server {
+    listen 80;
+    server_name localhost;
+    root /var/www/new-project-name/public;
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_pass new-project-name-php-container:9000;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        internal;
+    }
+
+    location ~ \.php$ {
+        return 404;
+    }
+
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+}
+
+$ vi docker/nginx/Dockerfile     ### replace empty-project with new-project-name
+FROM nginx:latest    ### OR nginx:alpine
+RUN apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
+COPY ./nginx/default.conf /etc/nginx/conf.d/
+
+$ vi docker/php/Dockerfile       ### replace empty-project with new-project-name
+FROM php:8.2.0-fpm
+RUN apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y --no-install-recommends \
+        git \
+        zlib1g-dev \
+        libxml2-dev \
+        libzip-dev \
+    && docker-php-ext-install \
+        zip \
+        intl \
+        mysqli \
+        pdo pdo_mysql
+
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+WORKDIR /var/www/new-project-name/
+
+$ vi .env                        ### change DATABASE_URL
+DATABASE_URL="mysql://root:root@new-project-name-mysql-container:3306/new-project-name-db"
+
+$ docker compose -f docker/docker-compose.yaml up -d
+$ docker compose -f docker/docker-compose.yaml down
+
+$ docker exec -it new-project-name-php-container bash
+# composer install
+# php bin/console doctrine:database:create
