@@ -12,18 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class MovieController extends AbstractController
 {
     #[Route('', name: 'app_movie_index')]
-    public function index(MovieRepository $movieRepository): Response
+    public function index(MovieRepository $repository): Response
     {
         return $this->render('movie/index.html.twig', [
-            'movies' => $movieRepository->findAll(),
+            'movies' => $repository->findAll(),
         ]);
     }
 
     #[Route('/{id<\d+>}', name: 'app_movie_show', methods: ['GET'])]
-    public function show(int $id, MovieRepository $movieRepository): Response
+    public function show(?Movie $movie): Response
     {
-        $movie = $movieRepository->find($id);
-
         return $this->render('movie/show.html.twig', [
             'movie' => $movie,
         ]);
