@@ -1,15 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Movies' %}
+{% block title 'Accueil' %}
+
+{% block header %}
+    <section class="h-100 p-5" style="background-color: black;">
+        <div class="text-white text-center h-100">
+            <h1 class="display-3 font-weight-bold m-0">SensioTV+</h1>
+        </div>
+    </section>
+{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper text-center">
-        <h1>Available movies</h1>
-
-        <section class="row row-cols-3 mt-5">
+    <section>
+        <h2 class="text-center">Latest movies:</h2>
+        <div class="row row-cols-3">
             {% for movie in movies %}
                 <div class="col">
-                    <a href="{{ path('app_movie_show', {'id': movie.id}) }}">
+                    <a href="{{ path('app_movie_show', {id: movie.id}) }}">
                         <div class="card w-75 m-auto">
                             <img src="{{ movie.poster }}" alt="{{ movie.poster }}">
                             <div class="card-img-overlay text-white">
@@ -20,8 +27,8 @@
                     </a>
                 </div>
             {% else %}
-                <p>No movies in database yet...</p>
+                <p class="col">No movies in database yet...</p>
             {% endfor %}
-        </section>
-    </div>
+        </div>
+    </section>
 {% endblock %}
