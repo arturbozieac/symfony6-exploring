@@ -25,7 +25,7 @@ class Movie
     #[ORM\Column(length: 255)]
     private ?string $country = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $releasedAt = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -34,7 +34,7 @@ class Movie
     #[ORM\Column(nullable: true)]
     private ?int $price = null;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'movies')]
+    #[ORM\ManyToMany(targetEntity: Genre::class, cascade: ['persist'])]
     private Collection $genres;
 
     public function __construct()

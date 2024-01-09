@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class Book
 {
     #[ORM\Id]
@@ -22,16 +23,16 @@ class Book
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $author = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 20)]
     private ?string $isbn = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $plot = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $releasedAt = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $cover = null;
 
     #[ORM\Column(nullable: true)]
@@ -79,7 +80,7 @@ class Book
         return $this->isbn;
     }
 
-    public function setIsbn(?string $isbn): static
+    public function setIsbn(string $isbn): static
     {
         $this->isbn = $isbn;
 
@@ -91,7 +92,7 @@ class Book
         return $this->plot;
     }
 
-    public function setPlot(?string $plot): static
+    public function setPlot(string $plot): static
     {
         $this->plot = $plot;
 
