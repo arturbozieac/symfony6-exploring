@@ -7,14 +7,8 @@ H
 templates/base.html.twig,f\f\ffb3f1cfd73fdec1f0c80c63d0b5bbc1fff22022
 N
 templates/book/index.html.twig,0\1\018c2683bc25109d99741b04eae4b85577451e77
-T
-$src/Controller/GetSongController.php,f\1\f1d1e8b8bfcad20225c28e7def7a5fc2c33ade2a
 D
 config/services.yaml,8\7\87042d1f46b57381244d70e7a42feeb7710727dc
-R
-"src/Controller/HelloController.php,b\1\b1e2f8c98b96642f0600ab3884accf306caa9d77
-U
-%src/Controller/HomePageController.php,f\a\faac8179d0b2dbc31fbd7e33a39372c9c0ca3547
 U
 %templates/home_page/contact.html.twig,8\0\80e650ab0afac4c8128a0b4d438098c2161087e3
 S
@@ -49,14 +43,10 @@ O
 templates/movie/index.html.twig,b\c\bc76e298539b43c585e3338975973c3179aa413e
 N
 templates/movie/show.html.twig,5\8\5811fb52571a5fb18e5befdecd407bfa06159db6
-D
-src/MovieService.php,a\0\a029c0d5a76f5071b6e84b84da87037f3695c8b8
 F
 src/Entity/Comment.php,6\1\617927279295705bcaee58560c7569e75fbe899b
 D
 src/Entity/Movie.php,4\b\4b508181abd3ba30e884ca7bbca044a99bcc6570
-Q
-!src/Controller/MainController.php,3\1\3128f39a733e336589065a2e5687c3b2adec324a
 D
 src/Entity/Genre.php,f\4\f40d58d89af21d0809dd8ea649abbabb8d987cc9
 T
