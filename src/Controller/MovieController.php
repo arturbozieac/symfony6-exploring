@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Consumer\OmdbApiConsumer;
 use App\Entity\Movie;
 use App\Enum\SearchTypeEnum;
-use App\Providers\MovieProvider;
+use App\Provider\MovieProvider;
 use App\Repository\MovieRepository;
 use App\Transformer\OmdbToGenreTransformer;
 use App\Transformer\OmdbToMovieTransformer;
