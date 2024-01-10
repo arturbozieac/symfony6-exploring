@@ -4,7 +4,8 @@ namespace App\Controller\demos;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Environment;
 
 #[AsController]
@@ -14,12 +15,12 @@ class GetSongController
     {
     }
 
-    #[Route('/song', name: 'get_song')]
-    public function __invoke() : Response
+    #[IsGranted('ROLE_MODERATOR')]
+    #[Route('/song', name: 'app_song_get')]
+    public function __invoke(): Response
     {
-        return new Response($this->twig->render('hello/index.html.twig', [
-            'controller_name' => 'See the song',
+        return new Response($this->twig->render('main/index.html.twig', [
+            'controller_name' => 'GetSongController',
         ]));
     }
-
 }
